@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <vector>
+#include <queue>
+#include <cstdlib>
 using namespace std;
 
 class labelGenerator {
@@ -23,7 +24,7 @@ class fileLabelGenerator : public labelGenerator {
 protected:
     string fileName;
     string fileContent;
-    vector<string> stringLines;
+    queue<string> headerQueue;
 
 public:
     fileLabelGenerator() : labelGenerator(), fileName("file") {}
@@ -48,48 +49,130 @@ public:
         return fileContent;
     }
 
-    vector<string> splitIntoLines(string& content) {
-        stringLines.clear();
+    void splitIntoLines(string& content) {
         stringstream s(content);
         string line;
         while (getline(s, line)) {
-            stringLines.push_back(line);
+            headerQueue.push(line);
         }
-        return stringLines;
     }
 
     string nextLabel() {
-        string labelStr = label + to_string(labelNum);
-        if (labelNum - 1 < stringLines.size()) {
-            labelStr += " " + stringLines[labelNum - 1];
+        string labelStr = label + to_string(labelNum++);
+        if (!headerQueue.empty()) {
+            labelStr += " " + headerQueue.front();
+            headerQueue.pop();
         }
-        labelNum++;
         return labelStr;
     }
 };
 
+void menu() {
+    while (true) {
+        char choice;
+        cout << "Welcome! Please choose an option:" << endl;
+        cout << "[A] Create labels without heads" << endl;
+        cout << "[B] Create labels with heads" << endl;
+        cout << "[C] Exit" << endl;
+        cin >> choice;
+        choice = tolower(choice);
+
+        if (choice == 'a') {
+            char secChoice;
+            string label;
+            int rep, startFrom = 1;
+
+            cout << "[A] Standard labels starting from 1" << endl;
+            cout << "[B] Custom labels" << endl;
+            cin >> secChoice;
+            secChoice = tolower(secChoice);
+
+            if (secChoice == 'a') {
+                cout << "Enter your label format: ";
+                cin >> label;
+                cout << "Enter the number of labels: ";
+                cin >> rep;
+                labelGenerator generator(label + " ", 1);
+
+                for (int i = 0; i < rep; ++i) {
+                    cout << generator.nextLabel() << endl;
+                }
+            }
+            else if (secChoice == 'b') {
+                cout << "Enter your label format: ";
+                cin >> label;
+                cout << "Enter starting number: ";
+                cin >> startFrom;
+                cout << "Enter the number of labels: ";
+                cin >> rep;
+                labelGenerator generator(label + " ", startFrom);
+
+                for (int i = 0; i < rep; ++i) {
+                    cout << generator.nextLabel() << endl;
+                }
+            }
+            else {
+                cout << "Invalid choice. Returning to main menu." << endl;
+            }
+
+        }
+        else if (choice == 'b') {
+            char secChoice;
+            string label, fileName;
+            int rep, startFrom = 1;
+
+            cout << "[A] Standard labels starting from 1" << endl;
+            cout << "[B] Custom labels" << endl;
+            cin >> secChoice;
+            secChoice = tolower(secChoice);
+
+            if (secChoice == 'a') {
+                cout << "Enter your label format: ";
+                cin >> label;
+                cout << "Enter the number of labels: ";
+                cin >> rep;
+                cout << "Enter the file name for headers: ";
+                cin >> fileName;
+                fileLabelGenerator generator(label + " ", 1, fileName);
+
+                for (int i = 0; i < rep; ++i) {
+                    cout << generator.nextLabel() << endl;
+                }
+            }
+            else if (secChoice == 'b') {
+                cout << "Enter your label format: ";
+                cin >> label;
+                cout << "Enter starting number: ";
+                cin >> startFrom;
+                cout << "Enter the file name for headers: ";
+                cin >> fileName;
+                cout << "Enter the number of labels: ";
+                cin >> rep;
+                fileLabelGenerator generator(label + " ", startFrom, fileName);
+
+                for (int i = 0; i < rep; ++i) {
+                    cout << generator.nextLabel() << endl;
+                }
+            }
+            else {
+                cout << "Invalid choice. Returning to main menu." << endl;
+            }
+
+        }
+        else if (choice == 'c') {
+            cout << "Exiting program. Goodbye!" << endl;
+            exit(0);
+
+        }
+        else {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+}
+
+
+
 int main() {
-    labelGenerator figureNumbers("Figure ", 1);
-    labelGenerator pointNumbers("P", 0);
-    cout << "Figure numbers: ";
-    for (int i = 0; i < 3; i++) {
-        cout << figureNumbers.nextLabel() << ", ";
-    }
-    cout << endl << "Point numbers: ";
-    for (int i = 0; i < 5; i++) {
-        cout << pointNumbers.nextLabel() << ", ";
-    }
-    cout << endl << "More figures: ";
-    for (int i = 0; i < 3; i++) {
-        cout << figureNumbers.nextLabel() << ", ";
-    }
-    cout << endl;
-
-    fileLabelGenerator figureLabels("Figure ", 1, "labels.txt");
-    cout << "Figure labels: \n";
-    for (int i = 0; i < 3; i++) {
-        cout << figureLabels.nextLabel() << endl;
-    }
-
+    menu();
     return 0;
 }
