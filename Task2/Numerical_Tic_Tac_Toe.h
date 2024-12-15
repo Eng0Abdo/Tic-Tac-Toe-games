@@ -292,7 +292,7 @@ void tic_tac_random_player<T>::getmove(int& x, int& y) {
          //   cin >> choice;
 
           //  if (choice == "1") {
-           //     players[1] = new tic_tac_human_player<char>(player1Name, 1);
+           //     players[1] = new tic_tac_human_player<char>(player2Name, 1);
            //     break;
          //   }
            // else if (choice == "2") {
