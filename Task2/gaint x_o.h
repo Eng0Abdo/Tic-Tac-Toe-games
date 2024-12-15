@@ -559,9 +559,35 @@ public:
 
     void getmove(int& x, int& y) {
         int position;
-
+        string input;
         cout << this->name << " (" << this->symbol << "), enter where you want to play (1 to 81): ";
-        cin >> position;
+        while (true) {
+            cin >> input;
+
+            bool valid = true;
+            for (char c : input) {
+                if (!isdigit(c)) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                cout << "Enter a valid option (1 to 81): ";
+                continue;
+            }
+
+            position = stoi(input);
+
+            if (position < 1 || position > 81) {
+                cout << "Enter a valid option (1 to 81): ";
+                continue;
+            }
+
+            break;
+        }
+
+        position = stoi(input);
 
         if (position == 1) { x = 0; y = 0; }
         else if (position == 2) { x = 0; y = 1; }
@@ -653,9 +679,6 @@ public:
         else if (position == 80) { x = 8; y = 7; }
         else if (position == 81) { x = 8; y = 8; }
 
-        else {
-            cout << "Invalid position. Please enter a number between 1 and 81.\n";
-        }
     }
 
 };

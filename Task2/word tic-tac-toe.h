@@ -19,17 +19,16 @@ public:
 		this->rows = 3;
 		this->columns = 3;
 		this->board = new char* [this->rows];
-		int position = 1; // Start numbering from 1
+		int position = 1; 
 		for (int i = 0; i < this->rows; i++) {
 			this->board[i] = new char[this->columns];
 			for (int j = 0; j < this->columns; j++) {
-				this->board[i][j] = '0' + position; // Convert number to char
+				this->board[i][j] = '0' + position;
 				position++;
 			}
 		}
 		this->n_moves = 0;
 
-		// Read file content and populate words vector
 		readFile();
 		setVector();
 	}
@@ -151,9 +150,36 @@ public:
 			cout << this->name << ", choose the character you want to play: ";
 			this->symbol = getChar();
 		
-		int position;
-		cout << this->name << " (" << this->symbol << "), enter where you want to play (1 to 9): ";
-		cin >> position;
+			int position;
+			string input;
+			cout << this->name << " (" << this->symbol << "), enter where you want to play (1 to 9): ";
+			while (true) {
+				cin >> input;
+
+				bool valid = true;
+				for (char c : input) {
+					if (!isdigit(c)) {
+						valid = false;
+						break;
+					}
+				}
+
+				if (!valid) {
+					cout << "Enter a valid option (1 to 9): ";
+					continue;
+				}
+
+				position = stoi(input);
+
+				if (position < 1 || position > 9) {
+					cout << "Enter a valid option (1 to 9): ";
+					continue;
+				}
+
+				break;
+			}
+
+			position = stoi(input);
 
 		// Map position to board coordinates
 		if (position == 1) {
@@ -182,9 +208,6 @@ public:
 		}
 		else if (position == 9) {
 			x = 2; y = 2;
-		}
-		else {
-			cout << "Invalid input Please enter a number between 1 and 9.\n";
 		}
 		
 	}
@@ -236,66 +259,3 @@ public:
 		}
 	}
 };
-
-
-
-//void wordTicTac() {
-//    int choice;
-//    Player<char>* players[2];
-//    wordBoard<char>* theBoard = new wordBoard<char>();
-//    string player1Name, player2Name;
-//
-//    cout << "Welcome to Word tic tac toe Game. :)\n";
-//
-//    cout << "Enter Player 1 name: ";
-//    cin >> player1Name;
-//    cout << "Choose Player 1 type:\n";
-//    cout << "1. Human\n";
-//    cout << "2. Random Computer\n";
-//    cin >> choice;
-//
-//
-//    switch (choice) {
-//    case 1:
-//        players[0] = new wordPlayer<char>(player1Name);
-//        break;
-//    case 2:
-//        players[0] = new wordRandomPlayer<char>();
-//        break;
-//    default:
-//        cout << "Invalid choice for Player 1. Exiting the game.\n";
-//        delete theBoard;
-//        wordTicTac();
-//    }
-//
-//    cout << "Enter Player 2 name: ";
-//    cin >> player2Name;
-//    cout << "Choose Player 2 type:\n";
-//    cout << "1. Human\n";
-//    cout << "2. Random Computer\n";
-//    cin >> choice;
-//
-//    switch (choice) {
-//    case 1:
-//        players[1] = new wordPlayer<char>(player2Name);
-//        break;
-//    case 2:
-//        players[1] = new wordRandomPlayer<char>();
-//        break;
-//    default:
-//        cout << "Invalid choice for Player 2. Exiting the game.\n";
-//        delete players[0];
-//        delete theBoard;
-//        wordTicTac();
-//    }
-//
-//
-//    GameManager<char> wordGame(theBoard, players);
-//    wordGame.run();
-//
-//
-//    delete theBoard;
-//    for (int i = 0; i < 2; ++i) {
-//        delete players[i];
-//    }
-//}

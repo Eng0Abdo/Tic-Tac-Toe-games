@@ -10,16 +10,16 @@ public:
         this->rows = 3;
         this->columns = 5;
         this->board = new char* [this->rows];
-        int position = 1; // Start numbering the positions
+        int position = 1;
 
         for (int i = 0; i < this->rows; i++) {
             this->board[i] = new char[this->columns];
             for (int j = 0; j < this->columns; j++) {
                 if ((i == 0 && j == 2) || (i == 1 && (j >= 1 && j <= 3)) || (i == 2)) {
-                    this->board[i][j] = '0' + position++; // Assign numbers as characters
+                    this->board[i][j] = '0' + position++;
                 }
                 else {
-                    this->board[i][j] = ' '; // Empty space for non-playable areas
+                    this->board[i][j] = ' ';
                 }
             }
         }
@@ -27,13 +27,26 @@ public:
     }
 
     bool update_board(int x, int y, T sympol) {
-        if (!(x < 0 || x >= this->rows || y < 0 || y >= this->columns) &&
-            (this->board[x][y] >= '1' && this->board[x][y] <= '9')) {
-            this->n_moves++;
-            this->board[x][y] = sympol;
-            return true;
+
+        if ((x < 0 || x >= 3 || y < 0 || y >= 5) && (this->board[x][y] == 'X' || this->board[x][y] == 'O')) {
+            return false;
         }
-        return false;
+
+        string cellValue = "";
+        cellValue += this->board[x][y];
+
+        if (!isdigit(cellValue[0])) {
+            return false;
+        }
+
+        int val = stoi(cellValue);
+        if (val < 1 || val > 9) {
+            return false;
+        }
+
+        this->board[x][y] = sympol;
+        this->n_moves++;
+        return true;
     }
 
     void display_board() {
@@ -82,10 +95,35 @@ public:
     pyramid_X_O_Player(string name, T symbol) : Player<T>(name, symbol) {}
 
     void getmove(int& x, int& y) {
-        int position;
 
-            cout << this->name << " (" << this->symbol << "), enter where you want to play (1 to 9): ";
-            cin >> position;
+        int position;
+        string input;
+        cout << this->name << " (" << this->symbol << "), enter where you want to play (1 to 9): ";
+        while (true) {
+            cin >> input;
+
+            bool valid = true;
+            for (char c : input) {
+                if (!isdigit(c)) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                cout << "Enter a valid option (1 to 9): ";
+                continue;
+            }
+
+            position = stoi(input);
+
+            if (position < 1 || position > 9) {
+                cout << "Enter a valid option (1 to 9): ";
+                continue;
+            }
+
+            break;
+        }
 
             // Map position to board coordinates
             if (position == 1) {
@@ -126,8 +164,8 @@ template <typename T>
 class pyramid_X_O_Random_Player : public RandomPlayer<T> {
 public:
     pyramid_X_O_Random_Player(T symbol) : RandomPlayer<T>(symbol) {
-        this-> name = "Random Computer Player";
-        srand(static_cast<unsigned int>(time(nullptr))); // Initialize RNG
+        this-> name = "Computer";
+        srand(static_cast<unsigned int>(time(nullptr)));
     }
 
     void getmove(int& x, int& y) {
@@ -161,63 +199,3 @@ public:
         }
     }
 };
-
-
-
-//void pyramid() {
-    //    int choice;
-    //    Player<char>* players[2];
-    //    pyramid_X_O<char>* theBoard = new pyramid_X_O<char>();
-    //    string player1Name, player2Name;
-    //
-    //    cout << "Welcome to Pyramid X-O Game. :)\n";
-    //
-    //    cout << "Enter Player 1 name: ";
-    //    cin >> player1Name;
-    //    cout << "Choose Player 1 type:\n";
-    //    cout << "1. Human\n";
-    //    cout << "2. Random Computer\n";
-    //    cin >> choice;
-    //
-    //    switch (choice) {
-    //    case 1:
-    //        players[0] = new pyramid_X_O_Player<char>(player1Name, 'X');
-    //        break;
-    //    case 2:
-    //        players[0] = new pyramid_X_O_Random_Player<char>('X');
-    //        break;
-    //    default:
-    //        cout << "Invalid choice for Player 1. Exiting the game.\n";
-    //        delete theBoard;
-    //        pyramid();
-    //    }
-    //
-    //    cout << "Enter Player 2 name: ";
-    //    cin >> player2Name;
-    //    cout << "Choose Player 2 type:\n";
-    //    cout << "1. Human\n";
-    //    cout << "2. Random Computer\n";
-    //    cin >> choice;
-    //
-    //    switch (choice) {
-    //    case 1:
-    //        players[1] = new pyramid_X_O_Player<char>(player2Name, 'O');
-    //        break;
-    //    case 2:
-    //        players[1] = new pyramid_X_O_Random_Player<char>('O');
-    //        break;
-    //    default:
-    //        cout << "Invalid choice for Player 2. Exiting the game.\n";
-    //        delete players[0];
-    //        delete theBoard;
-    //        pyramid();
-    //    }
-    //
-    //    GameManager<char> pyramid_game(theBoard, players);
-    //    pyramid_game.run();
-    //
-    //    delete theBoard;
-    //    for (int i = 0; i < 2; ++i) {
-    //        delete players[i];
-    //    }
-    //}
