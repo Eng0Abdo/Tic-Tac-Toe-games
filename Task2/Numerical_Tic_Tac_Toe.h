@@ -35,17 +35,17 @@ private:
 
 
 template <typename T>
-class human_player : public Player<T> {
+class tic_tac_human_player : public Player<T> {
 public:
-    human_player(string name, T symbol);
+    tic_tac_human_player(string name, T symbol);
     void getmove(int& x, int& y) override;
 };
 
 
 template <typename T>
-class random_player : public RandomPlayer<T> {
+class tic_tac_random_player : public RandomPlayer<T> {
 public:
-    random_player(string name, T symbol);
+    tic_tac_random_player(string name, T symbol);
     void getmove(int& x, int& y) override;
 };
 
@@ -213,10 +213,10 @@ bool tic_tac_board<T>::game_is_over() {
 
 // player1
 template <typename T>
-human_player<T>::human_player(string name, T symbol) : Player<T>(name, symbol) {}
+tic_tac_human_player<T>::tic_tac_human_player(string name, T symbol) : Player<T>(name, symbol) {}
 
 template <typename T>
-void human_player<T>::getmove(int& x, int& y) {
+void tic_tac_human_player<T>::getmove(int& x, int& y) {
     do {
         cout << this->name << ", enter row (0-2): ";
         cin >> x;
@@ -231,12 +231,12 @@ void human_player<T>::getmove(int& x, int& y) {
 
 
 template <typename T>
-random_player<T>::random_player(string name, T symbol) : RandomPlayer<T>(symbol) {
+tic_tac_random_player<T>::tic_tac_random_player(string name, T symbol) : RandomPlayer<T>(symbol) {
     this->name = name+"(random player)";
 }
 
 template <typename T>
-void random_player<T>::getmove(int& x, int& y) {
+void tic_tac_random_player<T>::getmove(int& x, int& y) {
     
     x = rand() % 3;  // take random row
     y = rand() % 3;// random column
@@ -245,3 +245,101 @@ void random_player<T>::getmove(int& x, int& y) {
 }
 
 #endif
+
+//void game5() {
+  //  while (true)
+   // {
+      //  string choice;
+       // Player<char>* players[2];
+      //  tic_tac_board<char>* theBoard = new tic_tac_board<char>();
+        //string player1Name, player2Name;
+
+       // cout << "Welcome to numerical_tic_tac Game." << endl;
+
+       // cout << "Enter Player 1 name: ";
+       // cin >> player1Name;
+
+       // while (true)
+       // {
+           // cout << "Choose Player 1 type:\n";
+           // cout << "1. Human\n";
+           // cout << "2. Random Computer\n";
+          //  cin >> choice;
+
+           // if (choice == "1") {
+            //    players[0] = new tic_tac_human_player<char>(player1Name, 2);
+          //      break;
+           // }
+           // else if (choice == "2") {
+            //    players[0] = new tic_tac_random_player<char>(player1Name,3);
+             //   break;
+         //   }
+          //  else {
+          //      cout << "please enter a valid choice" << endl;
+         //   }
+
+       // }
+
+
+       // cout << "Enter Player 2 name: ";
+        //cin >> player2Name;
+
+       // while (true)
+      //  {
+           // cout << "Choose Player 2 type:\n";
+          //  cout << "1. Human\n";
+         //   cout << "2. Random Computer\n";
+         //   cin >> choice;
+
+          //  if (choice == "1") {
+           //     players[1] = new tic_tac_human_player<char>(player1Name, 1);
+           //     break;
+         //   }
+           // else if (choice == "2") {
+           //     players[1] = new tic_tac_random_player<char>(player2Name,4);
+           //     break;
+          //  }
+           // else {
+              //  cout << "please enter a valid choice" << endl;
+           // }
+
+      //  }
+
+     //   GameManager<char> num_tic_tac_Game(theBoard, players);
+      //  num_tic_tac_Game.run();
+
+       // delete theBoard;
+      //  for (int i = 0; i < 2; ++i) {
+         //   delete players[i];
+       // }
+
+      //  cout << "Your game is finished do you want to continue ?" << endl;
+       // cout << "[1] YES" << endl;
+       // cout << "[2] NO" << endl;
+      //  string exit;
+      //  while (true)
+       // {
+       //     cin >> exit;
+       //     if (exit == "1") {
+       //         break;
+      //      }
+         //   else if (exit == "2") {
+        //        break;
+        //    }
+        //    else {
+          //      cout << "please enter a valid option" << endl;
+          //      cout << "[1] YES" << endl;
+         //       cout << "[2] NO" << endl;
+          //  }
+
+      //  }
+
+       // if (exit == "1") {
+       //     continue;
+      //  }
+     //   else if (exit == "2") {
+      //      break;
+     //   }
+  //  }
+//}
+
