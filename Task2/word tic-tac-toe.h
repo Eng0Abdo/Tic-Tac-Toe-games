@@ -36,13 +36,26 @@ public:
 
 
 	bool update_board(int x, int y, T sympol) {
-		if (!(x < 0 || x >= this->rows || y < 0 || y >= this->columns) &&
-			(this->board[x][y] >= '1' && this->board[x][y] <= '9')) {
-			this->n_moves++;
-			this->board[x][y] = sympol;
-			return true;
+
+		if (x < 0 || x >= 3 || y < 0 || y >= 3) {
+			return false;
 		}
-		return false;
+
+		string cellValue = "";
+		cellValue += this->board[x][y];
+
+		if (!isdigit(cellValue[0])) {
+			return false;
+		}
+
+		int val = stoi(cellValue);
+		if (val < 1 || val > 9) {
+			return false;
+		}
+
+		this->board[x][y] = sympol;
+		this->n_moves++;
+		return true;
 	}
 
 
