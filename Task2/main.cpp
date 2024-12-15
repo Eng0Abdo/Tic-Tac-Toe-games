@@ -692,6 +692,105 @@ void giant() {
     }
 }
 
+void GAME8() {
+
+    while (true)
+    {
+        string choice;
+        Player<char>* players[2];
+        sus_board<char>* theBoard = new sus_board<char>();
+        string player1Name, player2Name;
+
+        cout << "Welcome to SUS Game." << endl;
+
+        cout << "Enter Player 1 name: ";
+        cin >> player1Name;
+
+        while (true)
+        {
+            cout << "Choose Player 1 type:\n";
+            cout << "1. Human\n";
+            cout << "2. Random Computer\n";
+            cin >> choice;
+
+            if (choice == "1") {
+                players[0] = new human_player<char>(player1Name, 'S');
+                break;
+            }
+            else if (choice == "2") {
+                players[0] = new random_player<char>(player1Name, 'S');
+                break;
+            }
+            else {
+                cout << "please enter a valid choice" << endl;
+            }
+
+        }
+
+
+        cout << "Enter Player 2 name: ";
+        cin >> player2Name;
+
+        while (true)
+        {
+            cout << "Choose Player 2 type:\n";
+            cout << "1. Human\n";
+            cout << "2. Random Computer\n";
+            cin >> choice;
+
+            if (choice == "1") {
+                players[1] = new human_player<char>(player2Name, 'U');
+                break;
+            }
+            else if (choice == "2") {
+                players[1] = new random_player<char>(player2Name, 'U');
+                break;
+            }
+            else {
+                cout << "please enter a valid choice" << endl;
+            }
+
+        }
+
+        GameManager<char> SUSGAME(theBoard, players);
+        SUSGAME.run();
+
+        delete theBoard;
+        for (int i = 0; i < 2; ++i) {
+            delete players[i];
+        }
+
+        cout << "Your game is finished do you want to continue ?" << endl;
+        cout << "[1] YES" << endl;
+        cout << "[2] NO" << endl;
+        string exit;
+        while (true)
+        {
+            cin >> exit;
+            if (exit == "1") {
+                break;
+            }
+            else if (exit == "2") {
+                break;
+            }
+            else {
+                cout << "please enter a valid option" << endl;
+                cout << "[1] YES" << endl;
+                cout << "[2] NO" << endl;
+            }
+
+        }
+
+        if (exit == "1") {
+            continue;
+        }
+        else if (exit == "2") {
+            break;
+        }
+    }
+
+}
+
 int main() {
     cout << " Welcome to Tic Tac Toe Games" << endl;
     cout << "---------------------------------" << endl;
@@ -737,7 +836,7 @@ int main() {
             giant();
         }
         else if (choice == "8") {
-
+            GAME8();
         }
         else {
             cout << "please enter a valid option" << endl;

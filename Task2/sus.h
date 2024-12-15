@@ -1,4 +1,3 @@
-#pragma once
 #ifndef Tic_Tac_Toe
 #define Tic_Tac_Toe
 
@@ -24,7 +23,6 @@ public:
     bool is_win() override;
     bool is_draw() override;
     bool game_is_over() override;
-    void declare_winner();
     bool check_sus(int x, int y, T symbol);
 };
 
@@ -69,11 +67,11 @@ bool sus_board<T>::update_board(int x, int y, T symbol) {
     this->board[x][y] = symbol;
     this->n_moves++;
     if (check_sus(x, y, symbol)) {
-        if (this->n_moves % 2 == 0) {
-            p2++;
-        }
-        else {
+        if (symbol == 'S') {
             p1++;
+        }
+        else if (symbol == 'U') {
+            p2++;
         }
     }
     return true;
@@ -129,21 +127,6 @@ bool sus_board<T>::is_draw() {
 template <typename T>
 bool sus_board<T>::game_is_over() {
     return this->n_moves == (this->rows * this->columns);
-}
-
-template <typename T>
-void sus_board<T>::declare_winner() {
-    if (game_is_over()) {
-        if (p1 > p2) {
-            cout << "Player 1 wins with " << p1 << " points!" << endl;
-        }
-        else if (p2 > p1) {
-            cout << "Player 2 wins with " << p2 << " points!" << endl;
-        }
-        else {
-            cout << "It's a draw! Both players have " << p1 << " points." << endl;
-        }
-    }
 }
 
 template <typename T>
