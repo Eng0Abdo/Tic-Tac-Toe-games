@@ -41,15 +41,29 @@ public:
 		}
 	}
 
-	bool update_board(int x, int y, T sympol) {
-        int val = stoi(this->board[x][y]);
-		if (!(x < 0 || x >= 9 || y < 0 || y >= 9) && (val >= 1 && val <= 81)) {
-			this->n_moves++;
-			this->board[x][y] = sympol;
-			return true;
-		}
-		return false;
-	}
+    bool update_board(int x, int y, T sympol) {
+
+        if ((x < 0 || x >= 9 || y < 0 || y >= 9) && (this->board[x][y] == "X" || this->board[x][y] == "O")) {
+            return false;
+        }
+
+        string cellValue = this->board[x][y];
+        for (char c : cellValue) {
+            if (!isdigit(c)) {
+                return false;
+            }
+        }
+        int val = stoi(cellValue);
+        if (val < 1 || val > 81) {
+            return false;
+        }
+
+        this->board[x][y] = sympol;
+        this->n_moves++;
+        return true;
+    }
+
+
 
 	void fillBoard(int beginningRow, int beginningCol, string winningChar) {
 		for (int i = beginningRow; i < beginningRow + 3; i++) {
